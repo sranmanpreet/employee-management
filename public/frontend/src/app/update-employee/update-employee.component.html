@@ -1,0 +1,55 @@
+<div class="dialogHeader text-center">
+  <h4>{{emp.firstName}} {{emp.lastName}}, Emp ID: {{emp.empId}}</h4>
+</div>
+<div class="row" *ngIf="response">
+  <div class="col-md-12">
+    <br>
+    <h5 class='response'>{{response}}</h5>
+  </div>
+</div>
+<br>
+<form class="form text-center" #employeeForm="ngForm" (ngSubmit)="onSubmit(employeeForm)">
+  <input type="text" [(ngModel)]="emp._id" name="_id" hidden>
+  <div class="row">
+    <div class="col-md-6 col-sm-12">
+      <mat-form-field>
+        <mat-label for="manager">Manager</mat-label>
+        <mat-select name="manager" [(ngModel)]="emp.manager?emp.manager._id: No">
+          <mat-option [value]=''>----- No Manager -----</mat-option>
+          <mat-option *ngFor="let manager of managers" [value]='manager._id'>
+            {{manager.firstName}} {{manager.lastName}}, {{manager.empId}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-6 col-sm-12">
+      <mat-form-field>
+        <mat-label for="department">Department</mat-label>
+        <mat-select name="department" [(ngModel)]="emp.department._id" required>
+          <mat-option *ngFor="let department of departments" [value]='department._id'>
+            {{department.name}},{{department.depId}}
+          </mat-option>
+        </mat-select>
+        <mat-error align='end' *ngIf="employeeForm.submitted && employeeForm.controls.department.errors">
+          <label *ngIf="employeeForm.controls.department.errors.required">Select a Department</label>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-md-6 col-sm-12">
+      <mat-form-field>
+        <input matInput type='text' name='phone' [(ngModel)]="emp.phone" placeholder="Phone" [pattern]="phoneRegex"
+          maxlength="10" required>
+        <mat-error align='end' *ngIf="employeeForm.submitted && employeeForm.controls.phone.invalid">
+          <label *ngIf="employeeForm.controls.phone.errors.required" class='validation-message'>Enter phone
+            number.</label>
+          <label *ngIf="employeeForm.controls.phone.errors.pattern" class="validation-message">Only numbers are
+            allowed</label>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-md-12 col-sm-12 text-center">
+      <button mat-raised-button color="accent" type="submit">Update</button> &nbsp;
+      <button mat-raised-button type="button" (click)="onCancel()">Close</button>
+    </div>
+  </div>
+</form>

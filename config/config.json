@@ -1,0 +1,11 @@
+{
+    "development": {
+        "PORT": 3000,
+        "MONGODB_URI": "mongodb://localhost:27017/icets",
+        "MONGODB_USER": "hunarAdmin",
+        "MONGODB_PASS": "hunarAdmin#847"
+    },
+    "production": {
+        "PORT": 80
+    }
+}

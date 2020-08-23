@@ -1,0 +1,51 @@
+<br>
+<div class="row">
+  <div class="col-md-3">
+    <button mat-raised-button routerLink='/departments/add'>New Department</button>
+  </div>
+</div>
+
+<br>
+<h2>Department List</h2>
+
+<mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+  (page)="pageEvent = getDepartmentRecords($event)">
+</mat-paginator>
+
+<table mat-table [dataSource]="departments" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="depId">
+    <th mat-header-cell *matHeaderCellDef> Department Id </th>
+    <td mat-cell *matCellDef="let element"> {{element.depId}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="name">
+    <th mat-header-cell *matHeaderCellDef> Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <td mat-cell *matCellDef="let element">
+      <img class='svg' src="./../../assets/icons/delete.svg" alt="Delete" height="18px"
+        (click)="deleteDepartment(element)" />
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="loading">
+    <mat-footer-cell *matFooterCellDef colspan="6">
+      Loading data...
+    </mat-footer-cell>
+  </ng-container>
+  <ng-container matColumnDef="noData">
+    <mat-footer-cell *matFooterCellDef colspan="6">
+      No data.
+    </mat-footer-cell>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="{'hide': departments!=null}"></mat-footer-row>
+  <mat-footer-row *matFooterRowDef="['noData']" [ngClass]="{'hide': (departments!=null && departments.length !=0)}">
+  </mat-footer-row>
+</table>

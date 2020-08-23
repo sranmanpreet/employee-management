@@ -1,0 +1,105 @@
+<br>
+<form class="form" #searchForm="ngForm" (ngSubmit)="search(searchForm)">
+  <div class="row">
+    <div class="col-md-3 sButton">
+      <button mat-raised-button routerLink='/employees/add'>New Employee</button>
+    </div>
+    <div class="col-md-3">
+      <mat-form-field>
+        <mat-label for="selectedFilter">Search by</mat-label>
+        <mat-select name="selectedFilter" [(ngModel)]="selectedFilter">
+          <mat-option *ngFor="let filter of filters" [value]='filter'>
+            {{filter}}
+          </mat-option>
+        </mat-select>
+        <mat-error align='end' *ngIf="searchForm.submitted && searchForm.controls.selectedFilter.errors">
+          <label *ngIf="searchForm.controls.selectedFilter.errors.required">Select a Department</label>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3" *ngIf="selectedFilter">
+      <mat-form-field>
+        <input matInput type='number' name='id' [(ngModel)]="id" placeholder="{{selectedFilter}} Id">
+        <mat-error align='end' *ngIf="searchForm.submitted && searchForm.controls.id.invalid">
+          <label *ngIf="searchForm.controls.id.errors.required" class='validation-message'>Enter {{selectedFilter}} Id</label>
+          <label *ngIf="searchForm.controls.id.errors.pattern" class="validation-message">Only alphabets are
+            allowed.</label>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 sButton" *ngIf="selectedFilter">
+      <button mat-raised-button type="submit"><img src="../../assets/icons/search.svg" alt="search"></button>&nbsp;
+      <button mat-raised-button (click)="clearFilter(searchForm)">Clear Search</button>
+    </div>
+
+  </div>
+</form>
+<br>
+<br>
+<h2>Employee List</h2>
+<mat-paginator [length]="length" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+  (page)="pageEvent = getEmployeeRecords($event)">
+</mat-paginator>
+
+<table mat-table [dataSource]="employees" class="mat-elevation-z8">
+
+  <ng-container matColumnDef="empId">
+    <th mat-header-cell *matHeaderCellDef> EmpId </th>
+    <td mat-cell *matCellDef="let element"> {{element.empId}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="firstName">
+    <th mat-header-cell *matHeaderCellDef> First Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.firstName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="lastName">
+    <th mat-header-cell *matHeaderCellDef> Last Name </th>
+    <td mat-cell *matCellDef="let element"> {{element.lastName}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="manager">
+    <th mat-header-cell *matHeaderCellDef> Manager </th>
+    <td mat-cell *matCellDef="let element"> <span *ngIf="element.manager">{{element.manager.firstName}}
+        {{element.manager.lastName}}</span> </td>
+  </ng-container>
+
+  <ng-container matColumnDef="department">
+    <th mat-header-cell *matHeaderCellDef> Department </th>
+    <td mat-cell *matCellDef="let element"> {{element.department.name}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="phone">
+    <th mat-header-cell *matHeaderCellDef> Phone </th>
+    <td mat-cell *matCellDef="let element"> {{element.phone}} </td>
+  </ng-container>
+
+  <ng-container matColumnDef="actions">
+    <th mat-header-cell *matHeaderCellDef> Actions </th>
+    <td mat-cell *matCellDef="let element">
+      <img class='svg' src="./../../assets/icons/open.svg" alt="Delete" height="16px"
+        (click)="openEmployeeDialog(element)">&nbsp;
+      <img class='svg' src="./../../assets/icons/delete.svg" alt="Delete" height="18px"
+        (click)="deleteEmployee(element)" />
+    </td>
+  </ng-container>
+
+  <ng-container matColumnDef="loading" class='text-center'>
+    <mat-footer-cell *matFooterCellDef colspan="7">
+      Loading data...
+    </mat-footer-cell>
+  </ng-container>
+  <ng-container matColumnDef="noData" class='text-center'>
+    <mat-footer-cell *matFooterCellDef colspan="7">
+      No data
+    </mat-footer-cell>
+  </ng-container>
+
+  <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  <mat-footer-row *matFooterRowDef="['loading']" [ngClass]="employees==null? 'show': 'hide'">
+  </mat-footer-row>
+  <mat-footer-row *matFooterRowDef="['noData']"
+    [ngClass]="(employees!=null && employees.length ==0) ? 'show' : 'hide'">
+  </mat-footer-row>
+</table>

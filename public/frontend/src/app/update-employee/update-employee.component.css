@@ -1,0 +1,18 @@
+.dialogHeader {
+  display: flex;
+}
+
+.dialogHeader button {
+  margin: 0 0 0 auto;
+}
+
+mat-dialog-container {
+  padding: 0;
+}
+
+.response {
+  color: rgb(39, 153, 39);
+  font-size: smaller;
+  background-color: beige;
+  padding: 3px 10px;
+}

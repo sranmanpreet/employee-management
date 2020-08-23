@@ -1,0 +1,75 @@
+<div class="row">
+  <div class="col-md-12" *ngIf="response">
+    <br>
+    <h5 class='response'>{{response.message}}</h5>
+  </div>
+</div>
+<br>
+
+<form class="form" #employeeForm="ngForm" (ngSubmit)="onSubmit(employeeForm)">
+  <div class="row">
+    <div class="offset-md-3 col-md-3 col-sm-6">
+      <mat-form-field>
+        <input matInput type='text' name='firstName' [(ngModel)]="firstName" placeholder="First Name" required
+          [pattern]="nameRegex">
+        <mat-error align='end' *ngIf="employeeForm.submitted && employeeForm.controls.firstName.invalid">
+          <label *ngIf="employeeForm.controls.firstName.errors.required" class='validation-message'>Enter first
+            name.</label>
+          <label *ngIf="employeeForm.controls.firstName.errors.pattern" class="validation-message">Only alphabets are
+            allowed.</label>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <mat-form-field>
+        <input matInput type='text' name='lastName' [(ngModel)]="lastName" placeholder="Last Name" required
+          [pattern]="nameRegex">
+        <mat-error align='end' *ngIf="employeeForm.submitted && employeeForm.controls.lastName.invalid">
+          <label *ngIf="employeeForm.controls.lastName.errors.required" class='validation-message'>Enter last
+            name.</label>
+          <label *ngIf="employeeForm.controls.lastName.errors.pattern" class="validation-message">Only alphabets are
+            allowed.</label>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="offset-md-3 col-md-3 col-sm-6">
+      <mat-form-field>
+        <mat-label for="manager">Manager</mat-label>
+        <mat-select name="manager" [(ngModel)]="managerId">
+          <mat-option [value]=''>----- No Manager -----</mat-option>
+          <mat-option *ngFor="let manager of managers" [value]='manager._id'>
+            {{manager.firstName}} {{manager.lastName}}, {{manager.empId}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div class="col-md-3 col-sm-6">
+      <mat-form-field>
+        <mat-label for="department">Department</mat-label>
+        <mat-select name="department" [(ngModel)]="departmentId" required>
+          <mat-option *ngFor="let department of departments" [value]='department._id'>
+            {{department.name}}
+          </mat-option>
+        </mat-select>
+        <mat-error align='end' *ngIf="employeeForm.submitted && employeeForm.controls.department.errors">
+          <label *ngIf="employeeForm.controls.department.errors.required">Select a Department</label>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="offset-md-3 col-md-3 col-sm-6">
+      <mat-form-field>
+        <input matInput type='text' name='phone' [(ngModel)]="phone" placeholder="Phone" [pattern]="phoneRegex"
+          maxlength="10" required>
+        <mat-error align='end' *ngIf="employeeForm.submitted && employeeForm.controls.phone.invalid">
+          <label *ngIf="employeeForm.controls.phone.errors.required" class='validation-message'>Enter phone
+            number.</label>
+          <label *ngIf="employeeForm.controls.phone.errors.pattern" class="validation-message">Only numbers are
+            allowed</label>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <div class="col-sm-12">
+      <button mat-raised-button color="accent" type="submit">Add Employee</button>
+    </div>
+  </div>
+</form>

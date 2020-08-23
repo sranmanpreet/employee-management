@@ -1,0 +1,24 @@
+<div class="row">
+  <div class="col-md-12" *ngIf="response">
+    <br>
+    <h5 class='response'>{{response.message}}</h5>
+  </div>
+</div>
+<br>
+<form class="form-inline" #departmentForm="ngForm" (ngSubmit)="onSubmit(departmentForm)">
+  <div class="offset-md-3 col-md-3 offset-md-3 col-sm-3">
+    <mat-form-field>
+      <input matInput type='text' name='name' [(ngModel)]="name" placeholder="Department Name" required
+        [pattern]="nameRegex">
+      <mat-error align='end' *ngIf="departmentForm.submitted && departmentForm.controls.name.invalid">
+        <label *ngIf="departmentForm.controls.name.errors.required" class='validation-message'>Enter department
+          name.</label>
+        <label *ngIf="departmentForm.controls.name.errors.pattern" class="validation-message">Only alphabets are allowed.</label>
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div class="col-md-3 col-sm-3">
+    <button mat-raised-button color="accent" type="submit">Add Department</button>
+  </div>
+</form>
+
